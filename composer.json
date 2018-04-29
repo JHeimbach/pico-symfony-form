@@ -1,0 +1,37 @@
+{
+  "name": "jheimbach/pico-symfony-form",
+  "type": "pico-plugin",
+  "description": "A Content variables plugin for Pico CMS.",
+  "keywords": [ "pico", "picocms", "picocms-plugin", "pico-symfony-form", "pico-sym-form", "PicoSymForm"],
+  "homepage": "http://picocms.org/",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Johannes Heimbach",
+      "homepage": "https://github.com/jheimbach/pico-symfony-form",
+      "role": "Lead Developer"
+    },
+    {
+      "name": "Contributors",
+      "homepage": "https://github.com/jheimbach/pico-symfony-form/graphs/contributors"
+    }
+  ],
+  "support": {
+    "docs": "https://github.com/jheimbach/pico-symfony-form/blob/master/README.md",
+    "issues": "https://github.com/jheimbach/pico-symfony-form/issues",
+    "source": "https://github.com/jheimbach/pico-symfony-form"
+  },
+  "require": {
+    "php": ">=5.4.0",
+    "symfony/form": "^4.0",
+    "symfony/validator": "^4.0",
+    "symfony/translation": "^4.0",
+    "symfony/twig-bridge": "^4.0",
+    "symfony/security-csrf": "^4.0",
+    "symfony/config": "^4.0",
+    "symfony/yaml": "^4.0"
+  },
+  "autoload": {
+    "classmap": [ "PicoSymForm.php" ]
+  }
+}
