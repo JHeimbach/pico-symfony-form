@@ -32,6 +32,9 @@
     "symfony/yaml": "^4.0"
   },
   "autoload": {
-    "classmap": [ "PicoSymForm.php" ]
+    "classmap": [ "PicoSymForm.php" ],
+    "psr-4": {
+      "PicoSymForm\\": "src"
+    }
   }
 }
