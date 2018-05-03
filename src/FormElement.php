@@ -55,6 +55,10 @@ class FormElement
         } else {
             $this->type = TextType::class;
         }
+
+        if (array_key_exists('constraints', $this->options)) {
+            $this->options['constraints'] = $this->formatConstraints($options['constraints']);
+        }
     }
 
     private function figureOutType($type)
@@ -68,5 +72,22 @@ class FormElement
         } else {
             return TextType::class;
         }
+    }
+
+    private function formatConstraints($constraints)
+    {
+        $namespace = 'Symfony\Component\Validator\Constraints';
+        $classes = array_map(function ($constraint) use ($namespace) {
+            preg_match('/\((.*)\)/', $constraint, $matches);
+            $classname = $namespace . '\\' . preg_replace('/\((.*)\)/', '', $constraint);
+            if (class_exists($classname)) {
+                return new $classname($matches[1]);
+            }
+            return null;
+        }, $constraints);
+
+        return array_filter($classes, function ($el) {
+            return $el != null;
+        });
     }
 }
