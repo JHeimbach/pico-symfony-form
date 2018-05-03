@@ -34,12 +34,24 @@ class PicoSymForm extends AbstractPicoPlugin
     {
         $form = $this->formHandler->generateForm($formName);
 
+        $form->handleRequest();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            //Todo: do something with the form data
+            var_dump($data);
+        }
+
         return $this->formHandler->generateView($form);
     }
 
     public function onConfigLoaded($config)
     {
         $this->globalConfig = $config;
+
+        if (!array_key_exists('PicoSymForm', $this->globalConfig)) {
+            $this->globalConfig['PicoSymForm'] = [];
+        }
 
         $conf = $this->globalConfig['PicoSymForm'];
 
@@ -58,12 +70,11 @@ class PicoSymForm extends AbstractPicoPlugin
                 ]
             ]
         ];
-        $this->config =  $conf;
+        $this->config = $conf;
     }
 
     /**
      * @param $content
-     * @throws ReflectionException
      */
     public function onContentParsed(&$content)
     {
