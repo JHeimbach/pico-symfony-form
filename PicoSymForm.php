@@ -37,9 +37,7 @@ class PicoSymForm extends AbstractPicoPlugin
         $form->handleRequest();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            //Todo: do something with the form data
-            var_dump($data);
+            $this->formHandler->sendData($form->getData());
         }
 
         return $this->formHandler->generateView($form);
@@ -55,12 +53,21 @@ class PicoSymForm extends AbstractPicoPlugin
 
         $conf = $this->globalConfig['PicoSymForm'];
 
-        $conf += [
+        $this->config = array_merge_recursive_distinct([
             'confDir' => $this->getPico()->getConfigDir() . 'forms/',
-            'form_view_dir' => __DIR__ . '/forms/',
-            'form_view' => 'form.twig.html',
+            'view_dir' => __DIR__ . '/templates/',
+            'form_view' => 'form.html.twig',
             'form_theme' => 'form_div_layout.html.twig',
             'locale' => 'en',
+            'smtp' => [
+                'host' => 'smtp.mailgun.org',
+                'username' => '',
+                'password' => ''
+            ],
+            'email' => [
+                'sender' => 'sender@example.com',
+                'view' => 'email_template'
+            ],
             'translation_dir' => __DIR__ . '/translations/',
             'translations' => [
                 'messages' => [
@@ -69,8 +76,7 @@ class PicoSymForm extends AbstractPicoPlugin
                     'locale' => 'en'
                 ]
             ]
-        ];
-        $this->config = $conf;
+        ], $conf);
     }
 
     /**

@@ -81,7 +81,10 @@ class FormElement
             preg_match('/\((.*)\)/', $constraint, $matches);
             $classname = $namespace . '\\' . preg_replace('/\((.*)\)/', '', $constraint);
             if (class_exists($classname)) {
-                return new $classname($matches[1]);
+                if ($matches[1] !== "") {
+                    return new $classname($matches[1]);
+                }
+                return new $classname();
             }
             return null;
         }, $constraints);

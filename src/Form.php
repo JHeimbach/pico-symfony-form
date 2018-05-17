@@ -30,6 +30,16 @@ class Form
     private $formElements;
 
     /**
+     * @var string
+     */
+    private $template;
+
+    /**
+     * @var string[]
+     */
+    private $recipients;
+
+    /**
      * @return string
      */
     public function getName()
@@ -68,7 +78,9 @@ class Form
             throw new \RuntimeException('Form config for ' . $this->name . ' not found');
         }
 
-        $this->formElements = $this->parse($form);
+        $this->template = $form['template'];
+        $this->recipients = $form['recipients'];
+        $this->formElements = $this->parse($form['fields']);
     }
 
     private function parse($form)

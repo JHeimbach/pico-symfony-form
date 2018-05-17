@@ -29,9 +29,11 @@
     "symfony/twig-bridge": "^4.0",
     "symfony/security-csrf": "^4.0",
     "symfony/config": "^4.0",
-    "symfony/yaml": "^4.0"
+    "symfony/yaml": "^4.0",
+    "swiftmailer/swiftmailer": "^6.0"
   },
   "autoload": {
+    "files": ["src/array_merge_recursive_distinct.php"],
     "classmap": [ "PicoSymForm.php" ],
     "psr-4": {
       "PicoSymForm\\": "src"

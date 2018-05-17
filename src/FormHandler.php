@@ -6,6 +6,7 @@
 
 namespace PicoSymForm;
 
+use Exception;
 use ReflectionException;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
@@ -45,6 +46,11 @@ class FormHandler
      */
     private $pico;
 
+    /**
+     * @var EmailHandler
+     */
+    private $emailHandler;
+
 
     /**
      * @throws ReflectionException
@@ -57,7 +63,7 @@ class FormHandler
         $csrfManager = new CsrfTokenManager();
         // the Twig file that holds all the default markup for rendering forms
         // this file comes with TwigBridge
-        $this->twig = $this->getTwig($config['form_theme'], $csrfManager);
+        $this->twig = $this->getTwig($this->config['form_theme'], $csrfManager);
 
         // adds the FormExtension to Twig
         $this->twig->addExtension(new FormExtension());
@@ -70,6 +76,8 @@ class FormHandler
             ->addExtension(new CsrfExtension($csrfManager))
             ->addExtension(new ValidatorExtension(Validation::createValidator()))
             ->getFormFactory();
+
+        $this->emailHandler = new EmailHandler($this->config, $this->twig);
     }
 
     /**
@@ -86,7 +94,7 @@ class FormHandler
         $vendorTwigBridgeDirectory = dirname($appVariableReflection->getFileName());
 
         $twig = new Environment(new FilesystemLoader(array(
-            $this->config['form_view_dir'],
+            $this->config['view_dir'],
             $vendorTwigBridgeDirectory . '/Resources/views/Form',
         )));
 
@@ -105,7 +113,6 @@ class FormHandler
      */
     private function getTranslator(): Translator
     {
-        //Todo: load locale from config
         // creates the Translator
         $translator = new Translator($this->config['locale']);
         // somehow load some translations into it
@@ -166,5 +173,10 @@ class FormHandler
     public function generateView($form)
     {
         return $this->twig->render($this->config['form_view'], ['form' => $form->createView()]);
+    }
+
+    public function sendData($data)
+    {
+        $this->emailHandler->sendMail(['test@mediengstalt.de'], 'testmail', $data, 'email_message');
     }
 }
