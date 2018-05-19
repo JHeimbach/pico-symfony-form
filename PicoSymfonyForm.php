@@ -1,8 +1,6 @@
 <?php
 
-include __DIR__ . "/vendor/autoload.php";
-
-use PicoSymForm\FormHandler;
+use PicoSymfonyForm\FormHandler;
 
 /**
  * Created by 4/16/18 6:02 PM.
