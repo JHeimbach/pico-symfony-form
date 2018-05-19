@@ -36,11 +36,15 @@ class PicoSymForm extends AbstractPicoPlugin
 
         $form->handleRequest();
 
+        $alert = isset($_GET['send']) ? $_GET['send'] : null;
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->formHandler->sendData($form->getData());
+            $sended = $this->formHandler->sendData($formName, $form->getData());
+            $alert = $sended == 0 ? 'error' : 'success';
+            header('Location: ' . $this->getPico()->getRequestUrl() . '?send=' . $alert);
         }
 
-        return $this->formHandler->generateView($form);
+        return $this->formHandler->generateView($form, $alert);
     }
 
     public function onConfigLoaded($config)

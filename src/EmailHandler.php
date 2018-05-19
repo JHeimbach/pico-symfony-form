@@ -6,9 +6,9 @@
 
 namespace PicoSymForm;
 
-
 use Swift_Mailer;
-use Swift_SendmailTransport;
+use Swift_Message;
+use Swift_SmtpTransport;
 use Twig\Environment;
 
 class EmailHandler
@@ -35,19 +35,19 @@ class EmailHandler
         $this->config = $config;
         $this->twig = $twig;
 
-        $transport = new \Swift_SmtpTransport($config['smtp']['host']);
-        $transport->setUsername($config['smtp']['username']);
-        $transport->setPassword($config['smtp']['password']);
+        $transport = (new Swift_SmtpTransport($config['smtp']['host']))
+            ->setUsername($config['smtp']['username'])
+            ->setPassword($config['smtp']['password']);
 
         $this->mailer = new Swift_Mailer($transport);
     }
 
     public function sendMail($recipients, $subject, $data, $template)
     {
-        // Todo: check if mailer if ready
+        // Todo: check if mailer is ready
         $message = $this->createMessage($recipients, $subject, $data, $template);
 
-        $this->mailer->send($message);
+        return $this->mailer->send($message);
     }
 
     /**
@@ -55,15 +55,16 @@ class EmailHandler
      * @param $subject
      * @param $data
      * @param $template
-     * @return \Swift_Message
+     * @return Swift_Message
      */
     private function createMessage($recipients, $subject, $data, $template)
     {
-        $message = new \Swift_Message($subject);
-        return $message->setFrom($this->config['email']['sender'])
+        $message = (new Swift_Message($subject))
+            ->setFrom($this->config['email']['sender'])
             ->setTo($recipients)
             ->setBody($this->twig->render($template . '.html.twig', ['data' => $data]), 'text/html')
-            ->addPart($this->twig->render($template . '.html.twig', ['data' => $data]), 'text/plain');
-    }
+            ->addPart($this->twig->render($template . '.txt.twig', ['data' => $data]), 'text/plain');
 
+        return $message;
+    }
 }

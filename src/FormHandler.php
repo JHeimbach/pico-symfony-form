@@ -154,7 +154,7 @@ class FormHandler
      */
     public function generateForm($formName)
     {
-        $form = new Form($this->pico, $formName, $this->config['confDir']);
+        $form = $this->createForm($formName);
 
         $formBuilder = $this->formBuilder->createBuilder();
 
@@ -168,15 +168,26 @@ class FormHandler
 
     /**
      * @param FormInterface $form
+     * @param null|string $alert
      * @return string
      */
-    public function generateView($form)
+    public function generateView($form, $alert = null)
     {
-        return $this->twig->render($this->config['form_view'], ['form' => $form->createView()]);
+        return $this->twig->render($this->config['form_view'], ['form' => $form->createView(), 'alert' => $alert]);
     }
 
-    public function sendData($data)
+    public function sendData($formName, $data)
     {
-        $this->emailHandler->sendMail(['test@mediengstalt.de'], 'testmail', $data, 'email_message');
+        $form = $this->createForm($formName);
+        return $this->emailHandler->sendMail($form->getRecipients(), $form->getSubject(), $data, $form->getTemplate());
+    }
+
+    /**
+     * @param $formName
+     * @return Form
+     */
+    private function createForm($formName)
+    {
+        return new Form($this->pico, $formName, $this->config['confDir']);
     }
 }

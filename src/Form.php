@@ -40,6 +40,11 @@ class Form
     private $recipients;
 
     /**
+     * @var string
+     */
+    private $subject;
+
+    /**
      * @return string
      */
     public function getName()
@@ -61,6 +66,9 @@ class Form
         $this->loadConfig();
     }
 
+    /**
+     *
+     */
     private function loadConfig()
     {
         $yamlParser = $this->pico->getYamlParser();
@@ -78,6 +86,7 @@ class Form
             throw new \RuntimeException('Form config for ' . $this->name . ' not found');
         }
 
+        $this->subject = $form['subject'];
         $this->template = $form['template'];
         $this->recipients = $form['recipients'];
         $this->formElements = $this->parse($form['fields']);
@@ -98,5 +107,29 @@ class Form
     public function getFormElements()
     {
         return $this->formElements;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getRecipients()
+    {
+        return $this->recipients;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubject()
+    {
+        return $this->subject;
     }
 }
