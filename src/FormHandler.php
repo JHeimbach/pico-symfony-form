@@ -10,6 +10,7 @@ use Exception;
 use ReflectionException;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
+use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
@@ -65,9 +66,6 @@ class FormHandler
         // this file comes with TwigBridge
         $this->twig = $this->getTwig($this->config['form_theme'], $csrfManager);
 
-        // adds the FormExtension to Twig
-        $this->twig->addExtension(new FormExtension());
-
         // adds the TranslationExtension (gives us trans and transChoice filters)
         $this->twig->addExtension(new TranslationExtension($this->getTranslator()));
 
@@ -98,12 +96,12 @@ class FormHandler
             $vendorTwigBridgeDirectory . '/Resources/views/Form',
         )));
 
-        $formEngine = new TwigRendererEngine(array($defaultFormTheme), $twig);
-        $twig->addRuntimeLoader(new FactoryRuntimeLoader(array(
-            FormRenderer::class => function () use ($formEngine, $csrfManager) {
-                return new FormRenderer($formEngine, $csrfManager);
-            },
-        )));
+        $formEngine = new TwigRendererEngine(array($defaultFormTheme));
+        $formEngine->setEnvironment($twig);
+
+        $twig->addExtension(
+            new FormExtension(new TwigRenderer($formEngine, $csrfManager))
+        );
 
         return $twig;
     }

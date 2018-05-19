@@ -54,6 +54,7 @@ class Form
 
     /**
      * Form constructor.
+     * @param $pico
      * @param string $name
      * @param string $confDir
      */
