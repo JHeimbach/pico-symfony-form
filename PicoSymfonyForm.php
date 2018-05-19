@@ -8,7 +8,7 @@ use PicoSymForm\FormHandler;
  * Created by 4/16/18 6:02 PM.
  * @author Mediengstalt Heimbach - Johannes Heimbach
  */
-class PicoSymForm extends AbstractPicoPlugin
+class PicoSymfonyForm extends AbstractPicoPlugin
 {
 
     const API_VERSION = 2;
@@ -51,11 +51,11 @@ class PicoSymForm extends AbstractPicoPlugin
     {
         $this->globalConfig = $config;
 
-        if (!array_key_exists('PicoSymForm', $this->globalConfig)) {
-            $this->globalConfig['PicoSymForm'] = [];
+        if (!array_key_exists('PicoSymfonyForm', $this->globalConfig)) {
+            $this->globalConfig['PicoSymfonyForm'] = [];
         }
 
-        $conf = $this->globalConfig['PicoSymForm'];
+        $conf = $this->globalConfig['PicoSymfonyForm'];
 
         $this->config = array_merge_recursive_distinct([
             'confDir' => $this->getPico()->getConfigDir() . 'forms/',

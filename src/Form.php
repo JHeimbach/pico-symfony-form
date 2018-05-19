@@ -4,7 +4,7 @@
  * @author Mediengstalt Heimbach - Johannes Heimbach
  */
 
-namespace PicoSymForm;
+namespace PicoSymfonyForm;
 
 class Form
 {

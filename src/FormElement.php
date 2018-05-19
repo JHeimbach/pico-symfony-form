@@ -4,7 +4,7 @@
  * @author Mediengstalt Heimbach - Johannes Heimbach
  */
 
-namespace PicoSymForm;
+namespace PicoSymfonyForm;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 

@@ -34,9 +34,9 @@
   },
   "autoload": {
     "files": ["src/array_merge_recursive_distinct.php"],
-    "classmap": [ "PicoSymForm.php" ],
+    "classmap": [ "PicoSymfonyForm.php" ],
     "psr-4": {
-      "PicoSymForm\\": "src"
+      "PicoSymfonyForm\\": "src"
     }
   }
 }
