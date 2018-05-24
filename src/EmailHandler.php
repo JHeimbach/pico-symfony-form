@@ -37,7 +37,8 @@ class EmailHandler
 
         $transport = (new Swift_SmtpTransport($config['smtp']['host']))
             ->setUsername($config['smtp']['username'])
-            ->setPassword($config['smtp']['password']);
+            ->setPassword($config['smtp']['password'])
+            ->setEncryption('tls');
 
         $this->mailer = new Swift_Mailer($transport);
     }
