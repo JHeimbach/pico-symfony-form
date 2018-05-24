@@ -30,7 +30,8 @@
     "symfony/security-csrf": "^2.8",
     "symfony/config": "^2.8",
     "symfony/yaml": "^2.8",
-    "swiftmailer/swiftmailer": "^6.0"
+    "swiftmailer/swiftmailer": "^6.0",
+    "true/punycode": "^2.1"
   },
   "autoload": {
     "files": ["src/array_merge_recursive_distinct.php"],
