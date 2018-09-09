@@ -31,7 +31,8 @@
     "symfony/config": "^2.8",
     "symfony/yaml": "^2.8",
     "swiftmailer/swiftmailer": "^6.0",
-    "true/punycode": "^2.1"
+    "true/punycode": "^2.1.0",
+    "mailgun/mailgun-php": "^2.6.0"
   },
   "autoload": {
     "files": ["src/array_merge_recursive_distinct.php"],
