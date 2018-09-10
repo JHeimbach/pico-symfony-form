@@ -68,8 +68,17 @@ abstract class EmailHandler
      */
     protected function createMessage($recipients, $subject, $data, $template)
     {
+        $sender = $this->config['email']['sender'];
+        if(is_array($sender)) {
+            $from = $sender['address'];
+            $fromName = $sender['name'];
+        } else {
+            $from = $sender;
+            $fromName = '';
+        }
+
         $message = (new Swift_Message($subject))
-            ->setFrom($this->config['email']['sender'])
+            ->setFrom($from, $fromName)
             ->setTo($recipients)
             ->setBody($this->twig->render($template . '.html.twig', ['data' => $data]), 'text/html')
             ->addPart($this->twig->render($template . '.txt.twig', ['data' => $data]), 'text/plain');

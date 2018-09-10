@@ -31,17 +31,17 @@ class MailgunHandler extends EmailHandler
 
             $contentParts = [];
             foreach ($message->getChildren() as $child) {
-                if($child->getContentType() === 'text/plain') {
-                    $contentParts['text'] =  $child->getBody();
+                if ($child->getContentType() === 'text/plain') {
+                    $contentParts['text'] = $child->getBody();
                 }
             }
 
-            $send  = $this->mailer->messages()->send($this->config['mailgun']['domain'], [
-                'from'    => $this->getEmailAdresses($message->getFrom()),
-                'to'      => $this->getEmailAdresses($message->getTo()),
+            $send = $this->mailer->messages()->send($this->config['mailgun']['domain'], [
+                'from' => $this->getFromAddress($message->getFrom()),
+                'to' => $this->getEmailAdresses($message->getTo()),
                 'subject' => $message->getSubject(),
-                'html'    => $message->getBody(),
-                'text'    => $contentParts['text']
+                'html' => $message->getBody(),
+                'text' => $contentParts['text']
             ]);
 
             if ($send->getMessage() === 'Queued. Thank you.') {
@@ -66,11 +66,26 @@ class MailgunHandler extends EmailHandler
         return $this->mailer;
     }
 
+    private function getFromAddress($from)
+    {
+        return $this->getEmailAdresses($from)[0];
+    }
+
     /**
      * @param array $arr
      * @return array
      */
-    private function getEmailAdresses($arr) {
-        return array_keys($arr);
+    private function getEmailAdresses($arr)
+    {
+
+        $emails = [];
+        foreach ($arr as $email => $name) {
+            if ($name === null) {
+                $emails[] = $email;
+            } else {
+                $emails[] = $name . '<' . $email . '>';
+            }
+        }
+        return $emails;
     }
 }
