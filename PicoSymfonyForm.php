@@ -68,7 +68,7 @@ class PicoSymfonyForm extends AbstractPicoPlugin
             ],
             'email' => [
                 'sender' => 'sender@example.com',
-                'view' => 'email_template'
+                'view_dir' => '',
             ],
             'translation_dir' => __DIR__ . '/translations/',
             'translations' => [

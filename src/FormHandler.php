@@ -6,7 +6,9 @@
 
 namespace PicoSymfonyForm;
 
-use Exception;
+use PicoSymfonyForm\Emailhandler\EmailHandler;
+use PicoSymfonyForm\Emailhandler\MailgunHandler;
+use PicoSymfonyForm\Emailhandler\SmtpHandler;
 use ReflectionException;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
@@ -17,7 +19,6 @@ use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
@@ -26,7 +27,6 @@ use Symfony\Component\Translation\Translator;
 use Symfony\Component\Validator\Validation;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
-use Twig\RuntimeLoader\FactoryRuntimeLoader;
 
 class FormHandler
 {
@@ -75,7 +75,11 @@ class FormHandler
             ->addExtension(new ValidatorExtension(Validation::createValidator()))
             ->getFormFactory();
 
-        $this->emailHandler = new EmailHandler($this->config, $this->twig);
+        if(array_key_exists('mailgun', $this->config)) {
+            $this->emailHandler = new MailgunHandler($this->config);
+        } else {
+            $this->emailHandler = new SmtpHandler($this->config);
+        }
     }
 
     /**

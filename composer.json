@@ -32,7 +32,9 @@
     "symfony/yaml": "^2.8",
     "swiftmailer/swiftmailer": "^6.0",
     "true/punycode": "^2.1.0",
-    "mailgun/mailgun-php": "^2.6.0"
+    "mailgun/mailgun-php": "^2.6.0",
+    "guzzlehttp/psr7": "^1.4.2",
+    "php-http/curl-client": "^1.7.1"
   },
   "autoload": {
     "files": ["src/array_merge_recursive_distinct.php"],
