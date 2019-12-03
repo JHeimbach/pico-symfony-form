@@ -34,11 +34,11 @@ class PicoSymfonyForm extends AbstractPicoPlugin
 
         $form->handleRequest();
 
-        $alert = isset($_GET['send']) ? $_GET['send'] : null;
+        $alert = $_GET['send'] ?? null;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $sended = $this->formHandler->sendData($formName, $form->getData());
-            $alert = $sended == 0 ? 'error' : 'success';
+            $sent = $this->formHandler->sendData($formName, $form->getData());
+            $alert = $sent === 0 ? 'error' : 'success';
             header('Location: ' . $this->getPico()->getRequestUrl() . '?send=' . $alert);
         }
 

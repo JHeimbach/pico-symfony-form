@@ -36,19 +36,25 @@ class MailgunHandler extends EmailHandler
                 }
             }
 
-            $send = $this->mailer->messages()->send($this->config['mailgun']['domain'], [
-                'from' => $this->getFromAddress($message->getFrom()),
-                'to' => $this->getEmailAdresses($message->getTo()),
+            $sendParams = [
+                'from'    => $this->getFromAddress($message->getFrom()),
+                'to'      => $this->getEmailAdresses($message->getTo()),
                 'subject' => $message->getSubject(),
-                'html' => $message->getBody(),
-                'text' => $contentParts['text']
-            ]);
+                'html'    => $message->getBody(),
+                'text'    => $contentParts['text']
+            ];
+
+            if ($this->config['mailgun']['testmode'] === true) {
+                $sendParams['o:testmode'] = true;
+            }
+
+            $send = $this->mailer->messages()->send($this->config['mailgun']['domain'], $sendParams);
 
             if ($send->getMessage() === 'Queued. Thank you.') {
                 return count($message->getTo());
-            } else {
-                return 0;
             }
+
+            return 0;
 
         } catch (\Exception $e) {
             echo $e->getMessage();
@@ -62,7 +68,7 @@ class MailgunHandler extends EmailHandler
      */
     protected function createSender()
     {
-        $this->mailer = Mailgun::create($this->config['mailgun']['key']);
+        $this->mailer = Mailgun::create($this->config['mailgun']['key'], $this->config['mailgun']['endpoint']);
         return $this->mailer;
     }
 
