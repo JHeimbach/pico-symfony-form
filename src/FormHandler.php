@@ -75,10 +75,18 @@ class FormHandler
             ->addExtension(new ValidatorExtension(Validation::createValidator()))
             ->getFormFactory();
 
-        if(array_key_exists('mailgun', $this->config)) {
-            $this->emailHandler = new MailgunHandler($this->config);
-        } else {
-            $this->emailHandler = new SmtpHandler($this->config);
+        // init mail handler
+        switch ($this->config['handler']) {
+            case 'mailgun':
+            {
+                $this->emailHandler = new MailgunHandler($this->config);
+                break;
+            }
+            case 'smtp':
+            default:
+            {
+                $this->emailHandler = new SmtpHandler($this->config);
+            }
         }
     }
 
@@ -170,7 +178,7 @@ class FormHandler
 
     /**
      * @param FormInterface $form
-     * @param null|string $alert
+     * @param null|string   $alert
      * @return string
      */
     public function generateView($form, $alert = null)

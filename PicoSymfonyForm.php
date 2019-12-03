@@ -61,6 +61,7 @@ class PicoSymfonyForm extends AbstractPicoPlugin
             'form_view' => 'form.html.twig',
             'form_theme' => 'form_div_layout.html.twig',
             'locale' => 'en',
+            'handler' => 'smtp',
             'smtp' => [
                 'host' => 'smtp.mailgun.org',
                 'username' => '',
